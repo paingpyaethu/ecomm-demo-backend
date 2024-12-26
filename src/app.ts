@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
+import authRouter from './routes/auth.route';
+import { errorMiddleware, notFoundHandler } from './middleware/error';
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -18,5 +20,14 @@ app.use(
 		credentials: true,
 	})
 );
+
+/* ROUTES */
+app.use(`${API}`, authRouter);
+/* ROUTES */
+
+// ***** MIDDLEWARES ***** //
+app.use(errorMiddleware);
+app.use(notFoundHandler);
+// ***** MIDDLEWARES ***** //
 
 export default app;
