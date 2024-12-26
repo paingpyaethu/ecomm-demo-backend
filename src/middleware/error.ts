@@ -26,7 +26,7 @@ export const errorMiddleware = (
 		err = new ErrorHandler(message, 400);
 	}
 
-	if (err.message.includes('E11000 duplicate key error collection')) {
+	if (err.message.includes('Unique constraint failed on the fields: (`email`)')) {
 		const message = `User already exists`;
 		err = new ErrorHandler(message, 400);
 	}
