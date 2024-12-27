@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import authRouter from './routes/auth.route';
 import productRouter from './routes/product.route';
 import userRouter from './routes/user.route';
+import cartRouter from './routes/cart.route';
 import { isAuthenticated } from './middleware/auth';
 import { errorMiddleware, notFoundHandler } from './middleware/error';
 
@@ -29,6 +30,7 @@ app.use('/api/storage', express.static(__dirname + '/upload'));
 app.use(`${API}`, authRouter);
 app.use(`${API}`, isAuthenticated, productRouter);
 app.use(`${API}/user`, isAuthenticated, userRouter);
+app.use(`${API}`, isAuthenticated, cartRouter);
 /* ROUTES */
 
 // ***** MIDDLEWARES ***** //
