@@ -37,3 +37,17 @@ export const isAuthenticated = async (
 		return res.status(401).json({ message: 'Unauthorized.' });
 	}
 };
+
+export const authorizeRole = (req: any, _: Response, next: NextFunction) => {
+	const user = req.user;
+	if (user.role === 'admin') {
+		next();
+	} else {
+		return next(
+			new ErrorHandler(
+				'You do not have the necessary permissions to access this resource.',
+				403
+			)
+		);
+	}
+};

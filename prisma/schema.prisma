@@ -16,7 +16,6 @@ model User {
   password String
   name     String
   role     String   @default("user")
-  theme    String   @default("light")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -25,8 +24,8 @@ model Product {
   id          Int      @id @default(autoincrement())
   name        String
   description String
-  price       Float
-  imageUrl    String?
+  price       String
+  image     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

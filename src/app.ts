@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import authRouter from './routes/auth.route';
 import { errorMiddleware, notFoundHandler } from './middleware/error';
+import productRouter from './routes/product.route';
+import { isAuthenticated } from './middleware/auth';
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -20,9 +22,11 @@ app.use(
 		credentials: true,
 	})
 );
+app.use('/api/storage', express.static(__dirname + '/upload'));
 
 /* ROUTES */
 app.use(`${API}`, authRouter);
+app.use(`${API}`, isAuthenticated, productRouter);
 /* ROUTES */
 
 // ***** MIDDLEWARES ***** //
