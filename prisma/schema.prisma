@@ -11,11 +11,24 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  password String
-  name     String
-  role     String   @default("user")
+  id                       Int       @id @default(autoincrement())
+  email                    String    @unique
+  password                 String
+  name                     String
+  role                     String    @default("user")
+  defaultShippingAddressId Int?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+  address                  Address[]
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  city      String
+  country   String
+  street    String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -25,14 +38,14 @@ model Product {
   name        String
   description String
   price       String
-  image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Order {
   id        Int      @id @default(autoincrement())
-  userId    Int 
+  userId    Int
   productId Int
   quantity  Int
   status    String   @default("Pending")

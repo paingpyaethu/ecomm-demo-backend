@@ -3,9 +3,10 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import authRouter from './routes/auth.route';
-import { errorMiddleware, notFoundHandler } from './middleware/error';
 import productRouter from './routes/product.route';
+import userRouter from './routes/user.route';
 import { isAuthenticated } from './middleware/auth';
+import { errorMiddleware, notFoundHandler } from './middleware/error';
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -27,6 +28,7 @@ app.use('/api/storage', express.static(__dirname + '/upload'));
 /* ROUTES */
 app.use(`${API}`, authRouter);
 app.use(`${API}`, isAuthenticated, productRouter);
+app.use(`${API}/user`, isAuthenticated, userRouter);
 /* ROUTES */
 
 // ***** MIDDLEWARES ***** //
