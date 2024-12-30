@@ -3,7 +3,7 @@ import {
 	createProduct,
 	deleteProduct,
 	getProductById,
-	getProducts,
+	getProductsByCategory,
 	updateProduct,
 } from '../controllers/product.controller';
 import { fileUpload } from '../utils/fileUpload';
@@ -24,7 +24,7 @@ productRouter.put(
 	updateProduct
 );
 productRouter.delete('/products/:id', authorizeRole, deleteProduct);
-productRouter.get('/products', getProducts);
+productRouter.get('/products-by-category/:categoryName', getProductsByCategory);
 productRouter.get('/products/:id', getProductById);
 
 export default productRouter;

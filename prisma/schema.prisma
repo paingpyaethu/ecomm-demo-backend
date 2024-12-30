@@ -21,6 +21,7 @@ model User {
   updatedAt                DateTime   @updatedAt
   address                  Address[]
   cartItem                 CartItem[]
+  order                    Order[]
 }
 
 model Address {
@@ -34,15 +35,26 @@ model Address {
   updatedAt DateTime @updatedAt
 }
 
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+}
+
 model Product {
-  id          Int        @id @default(autoincrement())
-  name        String
-  description String
-  price       String
-  image       String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  cartItem    CartItem[]
+  id           Int            @id @default(autoincrement())
+  name         String
+  description  String
+  price        String
+  image        String?
+  categoryId   Int
+  category     Category       @relation(fields: [categoryId], references: [id])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  cartItem     CartItem[]
+  orderProduct OrderProduct[]
 }
 
 model CartItem {
@@ -57,10 +69,33 @@ model CartItem {
 }
 
 model Order {
+  id           Int            @id @default(autoincrement())
+  userId       Int
+  user         User           @relation(fields: [userId], references: [id])
+  address      String
+  netAmount    Decimal
+  status       String         @default("Pending")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  orderProduct OrderProduct[]
+  orderEvent   OrderEvent[]
+}
+
+model OrderProduct {
   id        Int      @id @default(autoincrement())
-  userId    Int
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id])
   productId Int
+  product   Product  @relation(fields: [productId], references: [id])
   quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderEvent {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id])
   status    String   @default("Pending")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

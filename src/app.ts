@@ -8,6 +8,8 @@ import userRouter from './routes/user.route';
 import cartRouter from './routes/cart.route';
 import { isAuthenticated } from './middleware/auth';
 import { errorMiddleware, notFoundHandler } from './middleware/error';
+import orderRouter from './routes/order.route';
+import categoryRouter from './routes/category.route';
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -31,6 +33,8 @@ app.use(`${API}`, authRouter);
 app.use(`${API}`, isAuthenticated, productRouter);
 app.use(`${API}/user`, isAuthenticated, userRouter);
 app.use(`${API}`, isAuthenticated, cartRouter);
+app.use(`${API}`, isAuthenticated, orderRouter);
+app.use(`${API}`, isAuthenticated, categoryRouter);
 /* ROUTES */
 
 // ***** MIDDLEWARES ***** //
