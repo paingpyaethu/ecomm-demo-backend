@@ -14,16 +14,16 @@ const productRouter = Router();
 productRouter.post(
 	'/products',
 	fileUpload.single('image') as any,
-	authorizeRole,
+	// authorizeRole,
 	createProduct
 );
 productRouter.put(
 	'/products/:id',
 	fileUpload.single('image') as any,
-	authorizeRole,
+	// authorizeRole,
 	updateProduct
 );
-productRouter.delete('/products/:id', authorizeRole, deleteProduct);
+productRouter.delete('/products/:id', deleteProduct);
 productRouter.get('/products-by-category/:categoryName', getProductsByCategory);
 productRouter.get('/products/:id', getProductById);
 

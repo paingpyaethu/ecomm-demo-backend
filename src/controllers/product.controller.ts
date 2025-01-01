@@ -186,6 +186,7 @@ export const getProductsByCategory = async (
 
 			products = await productClient.findMany({
 				where: { categoryId: category.id },
+				include: {category: true},
 				skip: (pageNumber - 1) * pageLimit,
 				take: pageLimit,
 			});

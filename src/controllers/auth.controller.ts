@@ -41,11 +41,11 @@ export const login = async (
 		const { email, password } = req.body;
 
 		const user = await userClient.findUnique({ where: { email } });
-		if (!user) return next(new ErrorHandler('Invalid credentials.', 401));
+		if (!user) return next(new ErrorHandler('Invalid credentials.', 400));
 
 		const isValidPassword = await bcrypt.compare(password, user.password);
 		if (!isValidPassword)
-			return next(new ErrorHandler('Invalid credentials.', 401));
+			return next(new ErrorHandler('Invalid credentials.', 400));
 
 		const token = jwt.sign(
 			{ userId: user.id },

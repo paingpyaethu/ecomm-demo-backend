@@ -16,6 +16,8 @@ const colors = [
 	{ name: 'pink', bgColor: '#F0A8D0' },
 	{ name: 'purple', bgColor: '#87A2FF' },
 	{ name: 'white', bgColor: '#ffffff' },
+	{ name: 'red', bgColor: '#D21312' },
+	{ name: 'green', bgColor: '#03C988' },
 ];
 
 const sizes = [
