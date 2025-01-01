@@ -60,7 +60,3 @@ export const login = async (
 		return next(new ErrorHandler(error.message, 500));
 	}
 };
-
-export const accountInfo = async (req: any, res: Response, next: NextFunction) => {
-	return res.json({ success: true, data: req.user });
-};

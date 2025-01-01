@@ -11,28 +11,15 @@ datasource db {
 }
 
 model User {
-  id                       Int        @id @default(autoincrement())
-  email                    String     @unique
-  password                 String
-  name                     String
-  role                     String     @default("user")
-  defaultShippingAddressId Int?
-  createdAt                DateTime   @default(now())
-  updatedAt                DateTime   @updatedAt
-  address                  Address[]
-  cartItem                 CartItem[]
-  order                    Order[]
-}
-
-model Address {
   id        Int      @id @default(autoincrement())
-  city      String
-  country   String
-  street    String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("user")
+  image     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  order     Order[]
 }
 
 model Category {
@@ -43,60 +30,75 @@ model Category {
   products  Product[]
 }
 
+model Color {
+  id       Int                @id @default(autoincrement())
+  name     String
+  bgColor  String
+  products ColorsOnProducts[]
+}
+
+model Size {
+  id       Int               @id @default(autoincrement())
+  name     String
+  products ProductsOnSizes[]
+}
+
 model Product {
-  id           Int            @id @default(autoincrement())
-  name         String
-  description  String
-  price        String
-  image        String?
-  categoryId   Int
-  category     Category       @relation(fields: [categoryId], references: [id])
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  cartItem     CartItem[]
-  orderProduct OrderProduct[]
+  id          Int                @id @default(autoincrement())
+  name        String
+  description String
+  price       String
+  image       String?
+  categoryId  Int
+  category    Category           @relation(fields: [categoryId], references: [id])
+  colors      ColorsOnProducts[]
+  sizes       ProductsOnSizes[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+}
+
+model ColorsOnProducts {
+  id        Int     @id @default(autoincrement())
+  colorId   Int
+  productId Int
+  stock     Boolean @default(true)
+  color     Color   @relation(fields: [colorId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@unique([colorId, productId])
+}
+
+model ProductsOnSizes {
+  id        Int     @id @default(autoincrement())
+  sizeId    Int
+  productId Int
+  stock     Boolean @default(true)
+  size      Size    @relation(fields: [sizeId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@unique([sizeId, productId])
 }
 
 model CartItem {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  productId Int
-  product   Product  @relation(fields: [productId], references: [id])
-  quantity  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id       Int    @id @default(autoincrement())
+  color    String
+  size     String
+  quantity Int
+  orderId  Int
+  order    Order  @relation(fields: [orderId], references: [id])
 }
 
 model Order {
-  id           Int            @id @default(autoincrement())
-  userId       Int
-  user         User           @relation(fields: [userId], references: [id])
-  address      String
-  netAmount    Decimal
-  status       String         @default("Pending")
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  orderProduct OrderProduct[]
-  orderEvent   OrderEvent[]
-}
-
-model OrderProduct {
-  id        Int      @id @default(autoincrement())
-  orderId   Int
-  order     Order    @relation(fields: [orderId], references: [id])
-  productId Int
-  product   Product  @relation(fields: [productId], references: [id])
-  quantity  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model OrderEvent {
-  id        Int      @id @default(autoincrement())
-  orderId   Int
-  order     Order    @relation(fields: [orderId], references: [id])
-  status    String   @default("Pending")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int        @id @default(autoincrement())
+  userId     Int
+  user       User       @relation(fields: [userId], references: [id])
+  name       String
+  price      Float
+  totalPrice Float
+  address    String     @default("US Express")
+  status     String     @default("Pending")
+  image      String
+  items      CartItem[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }

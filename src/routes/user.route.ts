@@ -1,11 +1,10 @@
 import { Router } from "express";
-import { addAddress, deleteAddress, getAllAddresses, updateDefaultShippingAddress } from "../controllers/user.controller";
+import { accountInfo, updateUserData } from "../controllers/user.controller";
+import { fileUpload } from "../utils/fileUpload";
 
 const userRouter = Router();
 
-userRouter.post('/address', addAddress);
-userRouter.get('/address', getAllAddresses);
-userRouter.delete('/address/:id', deleteAddress);
-userRouter.put('/default-shipping-address', updateDefaultShippingAddress);
+userRouter.get('/account-info', accountInfo);
+userRouter.put('/update-user-data', fileUpload.single('image') as any, updateUserData);
 
 export default userRouter;
